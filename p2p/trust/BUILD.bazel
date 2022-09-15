@@ -1,0 +1,39 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "trust",
+    srcs = [
+        "config.go",
+        "metric.go",
+        "store.go",
+        "ticker.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/p2p/trust",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/service",
+        "//libs/sync",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "trust_test",
+    srcs = [
+        "metric_test.go",
+        "store_test.go",
+    ],
+    embed = [":trust"],
+    deps = [
+        "//libs/log",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":trust",
+    visibility = ["//visibility:public"],
+)

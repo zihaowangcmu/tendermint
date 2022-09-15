@@ -1,0 +1,29 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "bits",
+    srcs = ["bit_array.go"],
+    importpath = "github.com/tendermint/tendermint/libs/bits",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/math",
+        "//libs/rand",
+    ],
+)
+
+go_test(
+    name = "bits_test",
+    srcs = ["bit_array_test.go"],
+    embed = [":bits"],
+    deps = [
+        "//libs/rand",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":bits",
+    visibility = ["//visibility:public"],
+)

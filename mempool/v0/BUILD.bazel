@@ -1,0 +1,62 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "mempool",
+    srcs = [
+        "clist_mempool.go",
+        "doc.go",
+        "reactor.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/mempool/v0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//config",
+        "//libs/clist",
+        "//libs/log",
+        "//libs/math",
+        "//libs/sync",
+        "//mempool",
+        "//p2p",
+        "//proxy",
+        "//types",
+    ],
+)
+
+go_test(
+    name = "mempool_test",
+    srcs = [
+        "bench_test.go",
+        "cache_test.go",
+        "clist_mempool_test.go",
+        "reactor_test.go",
+    ],
+    embed = [":mempool"],
+    deps = [
+        "//abci/client",
+        "//abci/client/mocks",
+        "//abci/example/kvstore",
+        "//abci/server",
+        "//config",
+        "//libs/log",
+        "//libs/rand",
+        "//libs/service",
+        "//mempool",
+        "//p2p",
+        "//p2p/mock",
+        "//proxy",
+        "//types",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@com_github_fortytw2_leaktest//:go_default_library",
+        "@com_github_go_kit_log//term:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//mock:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":mempool",
+    visibility = ["//visibility:public"],
+)

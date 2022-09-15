@@ -1,0 +1,55 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "pex",
+    srcs = [
+        "addrbook.go",
+        "errors.go",
+        "file.go",
+        "known_address.go",
+        "params.go",
+        "pex_reactor.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/p2p/pex",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto",
+        "//libs/cmap",
+        "//libs/log",
+        "//libs/math",
+        "//libs/rand",
+        "//libs/service",
+        "//libs/sync",
+        "//libs/tempfile",
+        "//p2p",
+        "//p2p/conn",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_minio_highwayhash//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "pex_test",
+    srcs = [
+        "addrbook_test.go",
+        "pex_reactor_test.go",
+    ],
+    embed = [":pex"],
+    deps = [
+        "//config",
+        "//libs/log",
+        "//libs/math",
+        "//libs/rand",
+        "//p2p",
+        "//p2p/mock",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":pex",
+    visibility = ["//visibility:public"],
+)

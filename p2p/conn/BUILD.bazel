@@ -1,0 +1,69 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "conn",
+    srcs = [
+        "conn_go110.go",
+        "conn_notgo110.go",
+        "connection.go",
+        "secret_connection.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/p2p/conn",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto",
+        "//crypto/ed25519",
+        "//crypto/encoding",
+        "//libs/async",
+        "//libs/flowrate",
+        "//libs/log",
+        "//libs/math",
+        "//libs/protoio",
+        "//libs/service",
+        "//libs/sync",
+        "//libs/timer",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@com_github_gtank_merlin//:go_default_library",
+        "@com_github_libp2p_go_buffer_pool//:go_default_library",
+        "@org_golang_x_crypto//chacha20poly1305:go_default_library",
+        "@org_golang_x_crypto//curve25519:go_default_library",
+        "@org_golang_x_crypto//hkdf:go_default_library",
+        "@org_golang_x_crypto//nacl/box:go_default_library",
+    ],
+)
+
+go_test(
+    name = "conn_test",
+    srcs = [
+        "connection_test.go",
+        "evil_secret_connection_test.go",
+        "secret_connection_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    embed = [":conn"],
+    deps = [
+        "//crypto",
+        "//crypto/ed25519",
+        "//crypto/encoding",
+        "//crypto/sr25519",
+        "//libs/async",
+        "//libs/log",
+        "//libs/os",
+        "//libs/protoio",
+        "//libs/rand",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@com_github_fortytw2_leaktest//:go_default_library",
+        "@com_github_gtank_merlin//:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@org_golang_x_crypto//chacha20poly1305:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":conn",
+    visibility = ["//visibility:public"],
+)

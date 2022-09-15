@@ -1,0 +1,40 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "client",
+    srcs = [
+        "client.go",
+        "grpc_client.go",
+        "local_client.go",
+        "socket_client.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/abci/client",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/net",
+        "//libs/service",
+        "//libs/sync",
+        "//libs/timer",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_x_net//context:go_default_library",
+    ],
+)
+
+go_test(
+    name = "client_test",
+    srcs = ["socket_client_test.go"],
+    deps = [
+        ":client",
+        "//abci/server",
+        "//libs/rand",
+        "//libs/service",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":client",
+    visibility = ["//visibility:public"],
+)

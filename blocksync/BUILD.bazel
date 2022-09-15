@@ -1,0 +1,56 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "blocksync",
+    srcs = [
+        "msgs.go",
+        "pool.go",
+        "reactor.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/blocksync",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/flowrate",
+        "//libs/log",
+        "//libs/service",
+        "//libs/sync",
+        "//p2p",
+        "//state",
+        "//store",
+        "//types",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+    ],
+)
+
+go_test(
+    name = "blocksync_test",
+    srcs = [
+        "msgs_test.go",
+        "pool_test.go",
+        "reactor_test.go",
+    ],
+    embed = [":blocksync"],
+    deps = [
+        "//config",
+        "//libs/log",
+        "//libs/rand",
+        "//mempool/mocks",
+        "//p2p",
+        "//proxy",
+        "//state",
+        "//store",
+        "//types",
+        "//types/time",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//mock:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":blocksync",
+    visibility = ["//visibility:public"],
+)

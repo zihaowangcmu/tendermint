@@ -1,0 +1,31 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "jsonrpc",
+    srcs = ["doc.go"],
+    importpath = "github.com/tendermint/tendermint/rpc/jsonrpc",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "jsonrpc_test",
+    srcs = ["jsonrpc_test.go"],
+    embed = [":jsonrpc"],
+    deps = [
+        "//libs/bytes",
+        "//libs/log",
+        "//libs/rand",
+        "//rpc/jsonrpc/client",
+        "//rpc/jsonrpc/server",
+        "//rpc/jsonrpc/types",
+        "@com_github_go_kit_log//term:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":jsonrpc",
+    visibility = ["//visibility:public"],
+)

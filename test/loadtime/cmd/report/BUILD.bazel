@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "report_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/tendermint/tendermint/test/loadtime/cmd/report",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//store",
+        "//test/loadtime/report",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "report",
+    embed = [":report_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "tests_test",
+    srcs = [
+        "mempool_test.go",
+        "p2p_secretconnection_test.go",
+        "rpc_jsonrpc_server_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    deps = [
+        "//abci/client",
+        "//abci/example/kvstore",
+        "//config",
+        "//crypto/ed25519",
+        "//libs/async",
+        "//libs/log",
+        "//libs/sync",
+        "//mempool",
+        "//mempool/v1:mempool",
+        "//p2p/conn",
+        "//rpc/jsonrpc/server",
+        "//rpc/jsonrpc/types",
+    ],
+)

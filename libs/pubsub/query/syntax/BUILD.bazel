@@ -1,0 +1,24 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "syntax",
+    srcs = [
+        "doc.go",
+        "parser.go",
+        "scanner.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/libs/pubsub/query/syntax",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "syntax_test",
+    srcs = ["syntax_test.go"],
+    deps = [":syntax"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":syntax",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,55 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "proxy",
+    srcs = [
+        "app_conn.go",
+        "client.go",
+        "metrics.gen.go",
+        "metrics.go",
+        "multi_app_conn.go",
+        "version.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/proxy",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//abci/client",
+        "//abci/example/kvstore",
+        "//libs/log",
+        "//libs/os",
+        "//libs/service",
+        "//libs/sync",
+        "//test/e2e/app",
+        "//version",
+        "@com_github_go_kit_kit//metrics:go_default_library",
+        "@com_github_go_kit_kit//metrics/discard:go_default_library",
+        "@com_github_go_kit_kit//metrics/prometheus:go_default_library",
+        "@com_github_prometheus_client_golang//prometheus:go_default_library",
+    ],
+)
+
+go_test(
+    name = "proxy_test",
+    srcs = [
+        "app_conn_test.go",
+        "multi_app_conn_test.go",
+    ],
+    embed = [":proxy"],
+    deps = [
+        "//abci/client",
+        "//abci/client/mocks",
+        "//abci/example/kvstore",
+        "//abci/server",
+        "//libs/log",
+        "//libs/rand",
+        "//proxy/mocks",
+        "@com_github_stretchr_testify//mock:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":proxy",
+    visibility = ["//visibility:public"],
+)

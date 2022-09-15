@@ -1,0 +1,56 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+proto_library(
+    name = "consensus_proto",
+    srcs = [
+        "types.proto",
+        "wal.proto",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//gogoproto:gogoproto_proto",
+        "//tendermint/consensus:consensus_proto",
+        "//tendermint/libs/bits:bits_proto",
+        "//tendermint/types:types_proto",
+        "@com_google_protobuf//:duration_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+go_proto_library(
+    name = "consensus_go_proto",
+    importpath = "github.com/tendermint/tendermint/proto/tendermint/consensus",
+    proto = ":consensus_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//gogoproto:gogo_proto",
+        "//tendermint/consensus:types_proto",
+        "//tendermint/libs/bits:types_proto",
+        "//tendermint/types:events_proto",
+        "//tendermint/types:types_proto",
+    ],
+)
+
+go_library(
+    name = "consensus",
+    srcs = [
+        "types.pb.go",
+        "wal.pb.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/proto/tendermint/consensus",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_cosmos_gogoproto//gogoproto:go_default_library",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":consensus",
+    visibility = ["//visibility:public"],
+)

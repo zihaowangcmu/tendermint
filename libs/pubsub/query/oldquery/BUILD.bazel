@@ -1,0 +1,33 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "oldquery",
+    srcs = [
+        "empty.go",
+        "peg.go",
+        "query.go",
+        "query.peg.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/libs/pubsub/query/oldquery",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "oldquery_test",
+    srcs = [
+        "empty_test.go",
+        "parser_test.go",
+        "query_test.go",
+    ],
+    deps = [
+        ":oldquery",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":oldquery",
+    visibility = ["//visibility:public"],
+)

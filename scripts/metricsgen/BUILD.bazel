@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "metricsgen_lib",
+    srcs = ["metricsgen.go"],
+    importpath = "github.com/tendermint/tendermint/scripts/metricsgen",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "metricsgen",
+    embed = [":metricsgen_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "metricsgen_test",
+    srcs = ["metricsgen_test.go"],
+    deps = [
+        ":metricsgen_lib",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)

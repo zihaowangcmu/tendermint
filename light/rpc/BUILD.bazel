@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "rpc",
+    srcs = ["client.go"],
+    importpath = "github.com/tendermint/tendermint/light/rpc",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto/merkle",
+        "//libs/bytes",
+        "//libs/math",
+        "//libs/service",
+        "//rpc/client",
+        "//rpc/core/types",
+        "//rpc/jsonrpc/types",
+        "//types",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":rpc",
+    visibility = ["//visibility:public"],
+)

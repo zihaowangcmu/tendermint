@@ -1,0 +1,39 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "types",
+    srcs = [
+        "height_vote_set.go",
+        "peer_round_state.go",
+        "round_state.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/consensus/types",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/bits",
+        "//libs/bytes",
+        "//libs/json",
+        "//libs/math",
+        "//p2p",
+        "//types",
+    ],
+)
+
+go_test(
+    name = "types_test",
+    srcs = ["height_vote_set_test.go"],
+    embed = [":types"],
+    deps = [
+        "//config",
+        "//crypto/tmhash",
+        "//libs/rand",
+        "//types",
+        "//types/time",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":types",
+    visibility = ["//visibility:public"],
+)

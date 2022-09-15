@@ -1,0 +1,24 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mock",
+    srcs = [
+        "peer.go",
+        "reactor.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/p2p/mock",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto/ed25519",
+        "//libs/log",
+        "//libs/service",
+        "//p2p",
+        "//p2p/conn",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":mock",
+    visibility = ["//visibility:public"],
+)

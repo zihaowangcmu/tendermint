@@ -1,0 +1,37 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "txindex",
+    srcs = [
+        "indexer.go",
+        "indexer_service.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/state/txindex",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/pubsub/query",
+        "//libs/service",
+        "//state/indexer",
+        "//types",
+    ],
+)
+
+go_test(
+    name = "txindex_test",
+    srcs = ["indexer_service_test.go"],
+    deps = [
+        ":txindex",
+        "//libs/log",
+        "//state/indexer/block/kv",
+        "//state/txindex/kv",
+        "//types",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":txindex",
+    visibility = ["//visibility:public"],
+)

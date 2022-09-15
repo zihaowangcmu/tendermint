@@ -1,0 +1,24 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "flags",
+    srcs = ["log_level.go"],
+    importpath = "github.com/tendermint/tendermint/libs/cli/flags",
+    visibility = ["//visibility:public"],
+    deps = ["//libs/log"],
+)
+
+go_test(
+    name = "flags_test",
+    srcs = ["log_level_test.go"],
+    deps = [
+        ":flags",
+        "//libs/log",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":flags",
+    visibility = ["//visibility:public"],
+)

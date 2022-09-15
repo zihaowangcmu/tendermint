@@ -1,0 +1,46 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "types",
+    srcs = [
+        "application.go",
+        "messages.go",
+        "pubkey.go",
+        "types.go",
+        "types.pb.go",
+        "util.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/abci/types",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto/ed25519",
+        "//crypto/encoding",
+        "//crypto/secp256k1",
+        "//libs/protoio",
+        "@com_github_cosmos_gogoproto//gogoproto:go_default_library",
+        "@com_github_cosmos_gogoproto//grpc:go_default_library",
+        "@com_github_cosmos_gogoproto//jsonpb:go_default_library",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+        "@org_golang_x_net//context:go_default_library",
+    ],
+)
+
+go_test(
+    name = "types_test",
+    srcs = ["messages_test.go"],
+    embed = [":types"],
+    deps = [
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":types",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "tools",
+    srcs = ["tools.go"],
+    importpath = "github.com/tendermint/tendermint/tools",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_bufbuild_buf//cmd/buf:go_default_library",
+        "@com_github_golangci_golangci_lint//cmd/golangci-lint:go_default_library",
+        "@com_github_pointlander_peg//:go_default_library",
+        "@com_github_vektra_mockery_v2//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":tools",
+    visibility = ["//visibility:public"],
+)

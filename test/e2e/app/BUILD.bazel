@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "app",
+    srcs = [
+        "app.go",
+        "snapshots.go",
+        "state.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/test/e2e/app",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//abci/example/code",
+        "//libs/log",
+        "//version",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":app",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,37 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "kv",
+    srcs = [
+        "kv.go",
+        "util.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/state/indexer/block/kv",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/pubsub/query",
+        "//libs/pubsub/query/syntax",
+        "//state/indexer",
+        "//types",
+        "@com_github_google_orderedcode//:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "kv_test",
+    srcs = ["kv_test.go"],
+    deps = [
+        ":kv",
+        "//libs/pubsub/query",
+        "//types",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":kv",
+    visibility = ["//visibility:public"],
+)

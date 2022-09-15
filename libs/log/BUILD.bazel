@@ -1,0 +1,48 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "log",
+    srcs = [
+        "filter.go",
+        "lazy.go",
+        "logger.go",
+        "nop_logger.go",
+        "testing_logger.go",
+        "tm_json_logger.go",
+        "tm_logger.go",
+        "tmfmt_logger.go",
+        "tracing_logger.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/libs/log",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/bytes",
+        "@com_github_go_kit_log//:go_default_library",
+        "@com_github_go_kit_log//level:go_default_library",
+        "@com_github_go_kit_log//term:go_default_library",
+        "@com_github_go_logfmt_logfmt//:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "log_test",
+    srcs = [
+        "filter_test.go",
+        "tm_logger_test.go",
+        "tmfmt_logger_test.go",
+        "tracing_logger_test.go",
+    ],
+    deps = [
+        ":log",
+        "@com_github_go_kit_log//:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":log",
+    visibility = ["//visibility:public"],
+)

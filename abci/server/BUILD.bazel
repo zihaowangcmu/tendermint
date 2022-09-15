@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "server",
+    srcs = [
+        "grpc_server.go",
+        "server.go",
+        "socket_server.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/abci/server",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/log",
+        "//libs/net",
+        "//libs/service",
+        "//libs/sync",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":server",
+    visibility = ["//visibility:public"],
+)

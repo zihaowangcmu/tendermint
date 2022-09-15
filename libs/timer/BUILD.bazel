@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "timer",
+    srcs = ["throttle_timer.go"],
+    importpath = "github.com/tendermint/tendermint/libs/timer",
+    visibility = ["//visibility:public"],
+    deps = ["//libs/sync"],
+)
+
+go_test(
+    name = "timer_test",
+    srcs = ["throttle_timer_test.go"],
+    embed = [":timer"],
+    deps = [
+        "//libs/sync",
+        "@com_github_stretchr_testify//assert:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":timer",
+    visibility = ["//visibility:public"],
+)

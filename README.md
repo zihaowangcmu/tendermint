@@ -1,3 +1,11 @@
+# Zihao's Note:
+# bazel-and-go-practice
+practice for Bazel + Go
+
+Following: https://www.tweag.io/blog/2021-09-08-rules_go-gazelle/
+
+NOTE: this does not work because of version issue
+
 # Tendermint
 
 ![banner](docs/tendermint-core-image.jpg)

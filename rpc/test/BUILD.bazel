@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "test",
+    srcs = ["helpers.go"],
+    importpath = "github.com/tendermint/tendermint/rpc/test",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//config",
+        "//libs/log",
+        "//libs/net",
+        "//node",
+        "//p2p",
+        "//privval",
+        "//proxy",
+        "//rpc/core/types",
+        "//rpc/jsonrpc/client",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":test",
+    visibility = ["//visibility:public"],
+)

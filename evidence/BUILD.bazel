@@ -1,0 +1,62 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "evidence",
+    srcs = [
+        "doc.go",
+        "pool.go",
+        "reactor.go",
+        "services.go",
+        "verify.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/evidence",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/clist",
+        "//libs/log",
+        "//light",
+        "//p2p",
+        "//state",
+        "//types",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//types:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "evidence_test",
+    srcs = [
+        "pool_test.go",
+        "reactor_test.go",
+        "verify_test.go",
+    ],
+    deps = [
+        ":evidence",
+        "//config",
+        "//crypto",
+        "//crypto/tmhash",
+        "//evidence/mocks",
+        "//internal/test",
+        "//libs/log",
+        "//p2p",
+        "//p2p/mocks",
+        "//state",
+        "//state/mocks",
+        "//store",
+        "//types",
+        "//version",
+        "@com_github_fortytw2_leaktest//:go_default_library",
+        "@com_github_go_kit_log//term:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//mock:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":evidence",
+    visibility = ["//visibility:public"],
+)

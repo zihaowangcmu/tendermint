@@ -1,0 +1,39 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "grpc",
+    srcs = [
+        "api.go",
+        "client_server.go",
+        "types.pb.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/rpc/grpc",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/net",
+        "//rpc/core",
+        "//rpc/jsonrpc/types",
+        "@com_github_cosmos_gogoproto//grpc:go_default_library",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+        "@org_golang_x_net//context:go_default_library",
+    ],
+)
+
+go_test(
+    name = "grpc_test",
+    srcs = ["grpc_test.go"],
+    deps = [
+        "//abci/example/kvstore",
+        "//rpc/test",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":grpc",
+    visibility = ["//visibility:public"],
+)

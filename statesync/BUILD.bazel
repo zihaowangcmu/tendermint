@@ -1,0 +1,68 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "statesync",
+    srcs = [
+        "chunks.go",
+        "messages.go",
+        "reactor.go",
+        "snapshots.go",
+        "stateprovider.go",
+        "syncer.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/statesync",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//config",
+        "//libs/log",
+        "//libs/sync",
+        "//light",
+        "//light/provider",
+        "//light/provider/http",
+        "//light/rpc",
+        "//light/store/db",
+        "//p2p",
+        "//proxy",
+        "//rpc/client/http",
+        "//state",
+        "//types",
+        "//version",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "statesync_test",
+    srcs = [
+        "chunks_test.go",
+        "messages_test.go",
+        "reactor_test.go",
+        "snapshots_test.go",
+        "syncer_test.go",
+    ],
+    embed = [":statesync"],
+    deps = [
+        "//config",
+        "//libs/log",
+        "//libs/sync",
+        "//p2p",
+        "//p2p/mocks",
+        "//proxy",
+        "//proxy/mocks",
+        "//state",
+        "//statesync/mocks",
+        "//types",
+        "//version",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//mock:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":statesync",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,31 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "mempool",
+    srcs = ["checktx.go"],
+    importpath = "github.com/tendermint/tendermint/test/fuzz/mempool/v0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//abci/example/kvstore",
+        "//config",
+        "//mempool",
+        "//mempool/v0:mempool",
+        "//proxy",
+    ],
+)
+
+go_test(
+    name = "mempool_test",
+    srcs = ["fuzz_test.go"],
+    data = glob(["testdata/**"]),
+    deps = [
+        ":mempool",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":mempool",
+    visibility = ["//visibility:public"],
+)

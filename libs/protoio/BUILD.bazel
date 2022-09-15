@@ -1,0 +1,30 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "protoio",
+    srcs = [
+        "io.go",
+        "reader.go",
+        "writer.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/libs/protoio",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_cosmos_gogoproto//proto:go_default_library"],
+)
+
+go_test(
+    name = "protoio_test",
+    srcs = ["io_test.go"],
+    deps = [
+        ":protoio",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_cosmos_gogoproto//test:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":protoio",
+    visibility = ["//visibility:public"],
+)

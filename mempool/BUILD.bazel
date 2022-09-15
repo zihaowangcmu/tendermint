@@ -1,0 +1,41 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "mempool",
+    srcs = [
+        "cache.go",
+        "ids.go",
+        "mempool.go",
+        "metrics.gen.go",
+        "metrics.go",
+        "tx.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/mempool",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/sync",
+        "//p2p",
+        "//types",
+        "@com_github_go_kit_kit//metrics:go_default_library",
+        "@com_github_go_kit_kit//metrics/discard:go_default_library",
+        "@com_github_go_kit_kit//metrics/prometheus:go_default_library",
+        "@com_github_prometheus_client_golang//prometheus:go_default_library",
+    ],
+)
+
+go_test(
+    name = "mempool_test",
+    srcs = [
+        "cache_bench_test.go",
+        "cache_test.go",
+        "ids_test.go",
+    ],
+    embed = [":mempool"],
+    deps = ["@com_github_stretchr_testify//require:go_default_library"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":mempool",
+    visibility = ["//visibility:public"],
+)

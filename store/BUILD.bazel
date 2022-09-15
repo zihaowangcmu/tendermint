@@ -1,0 +1,41 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "store",
+    srcs = ["store.go"],
+    importpath = "github.com/tendermint/tendermint/store",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//libs/sync",
+        "//types",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "store_test",
+    srcs = ["store_test.go"],
+    embed = [":store"],
+    deps = [
+        "//config",
+        "//crypto",
+        "//internal/test",
+        "//libs/log",
+        "//libs/rand",
+        "//state",
+        "//types",
+        "//types/time",
+        "//version",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+        "@com_github_tendermint_tm_db//:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":store",
+    visibility = ["//visibility:public"],
+)

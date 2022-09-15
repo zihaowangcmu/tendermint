@@ -1,0 +1,41 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "test",
+    srcs = [
+        "block.go",
+        "commit.go",
+        "doc.go",
+        "genesis.go",
+        "tx.go",
+        "validator.go",
+        "vote.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/internal/test",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//config",
+        "//crypto",
+        "//crypto/tmhash",
+        "//state",
+        "//types",
+        "//version",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+go_test(
+    name = "test_test",
+    srcs = ["factory_test.go"],
+    embed = [":test"],
+    deps = [
+        "//types",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":test",
+    visibility = ["//:__subpackages__"],
+)

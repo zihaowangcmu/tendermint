@@ -1,0 +1,39 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+proto_library(
+    name = "coregrpc_proto",
+    srcs = ["types.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["//tendermint/abci:abci_proto"],
+)
+
+go_proto_library(
+    name = "coregrpc_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tendermint/tendermint/rpc/grpc",
+    proto = ":coregrpc_proto",
+    visibility = ["//visibility:public"],
+    deps = ["//tendermint/abci:types_proto"],
+)
+
+go_library(
+    name = "grpc",
+    srcs = ["types.pb.go"],
+    importpath = "github.com/tendermint/tendermint/proto/tendermint/rpc/grpc",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_cosmos_gogoproto//grpc:go_default_library",
+        "@com_github_cosmos_gogoproto//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":grpc",
+    visibility = ["//visibility:public"],
+)

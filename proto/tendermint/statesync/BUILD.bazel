@@ -1,0 +1,30 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+proto_library(
+    name = "statesync_proto",
+    srcs = ["types.proto"],
+    visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "statesync_go_proto",
+    importpath = "github.com/tendermint/tendermint/proto/tendermint/statesync",
+    proto = ":statesync_proto",
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "statesync",
+    srcs = ["types.pb.go"],
+    importpath = "github.com/tendermint/tendermint/proto/tendermint/statesync",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_cosmos_gogoproto//proto:go_default_library"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":statesync",
+    visibility = ["//visibility:public"],
+)

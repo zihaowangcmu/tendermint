@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "secp256k1",
+    srcs = ["secp256k1.go"],
+    importpath = "github.com/tendermint/tendermint/crypto/secp256k1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crypto",
+        "//libs/json",
+        "@org_golang_x_crypto//ripemd160:go_default_library",
+    ],
+)
+
+go_test(
+    name = "secp256k1_test",
+    srcs = [
+        "secp256k1_internal_test.go",
+        "secp256k1_test.go",
+    ],
+    embed = [":secp256k1"],
+    deps = [
+        "//crypto",
+        "@com_github_btcsuite_btcd_btcutil//base58:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+        "@com_github_stretchr_testify//require:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":secp256k1",
+    visibility = ["//visibility:public"],
+)

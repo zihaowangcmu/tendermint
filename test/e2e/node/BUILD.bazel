@@ -1,0 +1,38 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "node_lib",
+    srcs = [
+        "config.go",
+        "main.go",
+    ],
+    importpath = "github.com/tendermint/tendermint/test/e2e/node",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//abci/server",
+        "//config",
+        "//crypto/ed25519",
+        "//libs/cli/flags",
+        "//libs/log",
+        "//libs/net",
+        "//light",
+        "//light/proxy",
+        "//light/rpc",
+        "//light/store/db",
+        "//node",
+        "//p2p",
+        "//privval",
+        "//proxy",
+        "//rpc/jsonrpc/server",
+        "//test/e2e/app",
+        "//test/e2e/pkg",
+        "@com_github_burntsushi_toml//:go_default_library",
+        "@com_github_spf13_viper//:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "node",
+    embed = [":node_lib"],
+    visibility = ["//visibility:public"],
+)

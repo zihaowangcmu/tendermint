@@ -1,0 +1,30 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "report",
+    srcs = ["report.go"],
+    importpath = "github.com/tendermint/tendermint/test/loadtime/report",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//types",
+        "@com_github_gofrs_uuid//:go_default_library",
+        "@org_gonum_v1_gonum//stat:go_default_library",
+    ],
+)
+
+go_test(
+    name = "report_test",
+    srcs = ["report_test.go"],
+    deps = [
+        ":report",
+        "//types",
+        "@com_github_google_uuid//:go_default_library",
+        "@org_golang_google_protobuf//types/known/timestamppb:go_default_library",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":report",
+    visibility = ["//visibility:public"],
+)
